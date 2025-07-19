@@ -1,11 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <sys/sysctl.h>
 #include <machine/apmvar.h>
+
+
+/* 
+ * C script to fetch OpeBSD system data to use in WMs status bar 
+ * e.g dwm
+ * */
+
+void getTime(char timeData[], size_t dataSize) {
+	time_t rawtime;
+	struct tm *timeinfo;
+
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+
+	strftime(timeData, dataSize, "%H:%M:%S", timeinfo);
+}
+
+void getDate(char dateData[], size_t dataSize) {
+	time_t rawtime;
+	struct tm *timeinfo;
+
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+
+	strftime(dateData, dataSize, "%a %Y-%d-%m", timeinfo);
+}
 
 void fetchBat(char batData[], size_t dataSize) {
 	struct apm_power_info info;
@@ -57,11 +84,15 @@ void memUsage(char memData[], size_t dataSize) {
 int main() {
 	char bat[128];
 	char memU[128];
-
+	char date[128];
+	char time[128];
 
 	fetchBat(bat, sizeof(bat));
 	memUsage(memU, sizeof(memU));
-	printf("%s | %s\n", bat, memU);
+	getDate(date, sizeof(date));
+	getTime(time, sizeof(time));
+
+	printf("%s | %s | %s | %s\n", bat, memU, date, time);
 	
 	return 0;	
 }
