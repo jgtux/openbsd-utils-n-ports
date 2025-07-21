@@ -42,13 +42,13 @@ void fetchBat(char batData[], size_t dataSize) {
 	fd = open("/dev/apm", O_RDONLY);
 		
 	if(ioctl(fd, APM_IOC_GETPOWER, &info) == -1 ) {
-		// Add error handling
-		printf("Error 1.");
+		printf("Error getting battery info in ioctl.");
+		return;
 	}
 
 	if (close(fd) == -1) {
-		// error handling
-		printf("Error 2.");
+		printf("Error when closing file descriptor of /dev/apm.");
+		return;
 	}
 
 	state = info.battery_state;
@@ -72,8 +72,8 @@ void memUsage(char memData[], size_t dataSize) {
 	size_t usermemSize = sizeof(usermem);
 
 	if(sysctl(lvls, 2, &usermem, &usermemSize, NULL, 0) == -1) {
-		// error handling	
-		printf("Error 1.");	
+		printf("Error getting user memory in sysctl.");
+		return;	
 	}
 	
 	availmem = sysconf(_SC_PAGESIZE)*sysconf(_SC_AVPHYS_PAGES);
