@@ -1,4 +1,6 @@
 # roswell-openbsd
+Roswell - Common Lisp environment setup utility.
+
 
 ## libutil.so.18.o quick fix "Unsafe"
 
