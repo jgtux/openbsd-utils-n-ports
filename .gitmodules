@@ -1,0 +1,3 @@
+[submodule "roswell-openbsd/roswell"]
+	path = roswell-openbsd/roswell
+	url = https://github.com/roswell/roswell
